@@ -1,7 +1,7 @@
 Name:           handbrake
 Summary:        Multithreaded Video Transcoder
 Version:        0.10.5
-Release:	1%{dist}
+Release:	2%{dist}
 Url:            http://handbrake.fr/
 Source:         https://handbrake.fr/mirror/HandBrake-%{version}.tar.bz2
 License:        GPLv2
@@ -48,6 +48,7 @@ BuildRequires:  pkgconfig(x264)
 BuildRequires:  pkgconfig(x265)
 Requires: 	%{name}-cli = %{version}-%{release}
 Requires: 	%{name}-gui = %{version}-%{release}
+Requires:	desktop-file-utils
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
@@ -108,6 +109,19 @@ make install DESTDIR=%{buildroot} -C build
 
 %find_lang ghb
 
+%post
+/usr/bin/update-desktop-database &> /dev/null || :
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+
+%postun
+/usr/bin/update-desktop-database &> /dev/null || :
+if [ $1 -eq 0 ] ; then
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+fi
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f ghb.lang
 
@@ -126,6 +140,8 @@ make install DESTDIR=%{buildroot} -C build
 
 
 %changelog
+* Mon May 2 2016 Pavlo Rudyi <paulcarroty at riseup.net> - 0.10.5-2
+- Added scriptlets
 
 * Thu Apr 28 2016 David Vásquez <davidjeremias82 AT gmail DOT com> - 0.10.5-1
 - Initial build
