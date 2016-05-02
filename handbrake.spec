@@ -48,7 +48,6 @@ BuildRequires:  pkgconfig(x264)
 BuildRequires:  pkgconfig(x265)
 Requires: 	%{name}-cli = %{version}-%{release}
 Requires: 	%{name}-gui = %{version}-%{release}
-Requires:	desktop-file-utils
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
