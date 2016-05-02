@@ -107,6 +107,10 @@ make
 
 make install DESTDIR=%{buildroot} -C build
 
+%check
+
+desktop-file-validate %{buildroot}%{_datadir}/applications/ghb.desktop
+
 %find_lang ghb
 
 %post gui
