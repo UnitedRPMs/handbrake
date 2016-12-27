@@ -63,7 +63,7 @@ BuildRequires:  libass-devel >= 0.13.1
 BuildRequires:  libbluray-devel >= 0.9.3-2
 BuildRequires:  libdvdnav-devel >= 5.0.1
 BuildRequires:  libdvdread-devel >= 5.0.0
-BuildRequires:  libfdk-aac-devel >= 0.1.4
+BuildRequires:  fdk-aac-devel
 BuildRequires:  libgudev1-devel
 BuildRequires:  libmfx-devel >= 1.16
 BuildRequires:  libmpeg2-devel >= 0.5.1
@@ -89,8 +89,8 @@ BuildRequires:  subversion
 BuildRequires:  tar
 BuildRequires:  webkitgtk3-devel
 BuildRequires:  wget
-BuildRequires:  x264-devel >= 1:0.148
-BuildRequires:  x265-devel >= 1:2.1-2
+BuildRequires:  x264-devel
+BuildRequires:  x265-devel
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
 BuildRequires:  ffmpeg-devel
