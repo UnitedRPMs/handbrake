@@ -9,7 +9,7 @@
 
 %global desktop_id fr.handbrake.ghb
 
-Name:           HandBrake
+Name:           handbrake
 Version:        1.0
 Release:        34%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        An open-source multiplatform video transcoder
@@ -31,11 +31,11 @@ Source0:        https://github.com/%{name}/%{name}/archive/%{commit0}.tar.gz#/%{
 Patch0:         https://github.com/SeanMcG/HandBrake/commit/cf1571f3bf314638a608784f19f80edb736e8144.patch
 
 # Build with unpatched libbluray
-Patch1:         HandBrake-no_clip_id.patch
+Patch1:         https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-no_clip_id.patch
 # Use system OpenCL headers
-Patch2:         HandBrake-system-OpenCL.patch
+Patch2:         https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-system-OpenCL.patch
 # Pass strip tool override to gtk/configure
-Patch3:         HandBrake-nostrip.patch
+Patch3:         https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-nostrip.patch
 
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
@@ -96,7 +96,7 @@ BuildRequires:  zlib-devel
 BuildRequires:  ffmpeg-devel
 
 Requires:       hicolor-icon-theme
-Requires:	ffmpeg
+Requires:	    ffmpeg
 
 %description
 %{name} is a general-purpose, free, open-source, cross-platform, multithreaded
