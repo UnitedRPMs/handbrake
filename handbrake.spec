@@ -65,7 +65,7 @@ BuildRequires:  libass-devel >= 0.13.1
 BuildRequires:  libbluray-devel >= 0.9.3-2
 BuildRequires:  libdvdnav-devel >= 5.0.1
 BuildRequires:  libdvdread-devel >= 5.0.0
-BuildRequires:  libfdk-aac-devel >= 0.1.4
+BuildRequires:  fdk-aac-devel >= 0.1.4
 BuildRequires:  libgudev1-devel
 BuildRequires:  libmfx-devel >= 1.16
 BuildRequires:  libmpeg2-devel >= 0.5.1
