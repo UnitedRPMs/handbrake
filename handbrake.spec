@@ -16,7 +16,7 @@ Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
 
-Source0:        https://github.com/%{name}/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
 # The project fetches libraries to bundle in the executable at compile time; to
 # have them available before building, proceed as follows. All files will be
@@ -134,7 +134,7 @@ protection.
 This package contains the command line version of the program.
 
 %prep
-%setup -qn %{name}-%{commit0}
+%setup -qn HandBrake-%{commit0}
 %{?_with_ffmpeg:%patch0 -p1}
 %patch1 -p1
 %patch2 -p1
