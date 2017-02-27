@@ -1,5 +1,5 @@
-%global commit0 063446fa62266cea2d6a0487e8814bf5f2dba376
-%global date 20170102
+%global commit0 5ecc600a805c6dc2632f4ca6d3beb4fbb8cbefd0
+%global date 20170227
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 # Build with "--with ffmpeg" or enable this to use system FFMpeg libraries
@@ -10,7 +10,7 @@
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
-Version:        1.0.2
+Version:        1.0.3
 Release:        1%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
@@ -27,10 +27,6 @@ Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz
 # make contrib.fetch
 
 %{!?_with_ffmpeg:Source10:       https://libav.org/releases/libav-12.tar.gz}
-
-# Make bundled FFMpeg patch optional (until FFMpeg 2.9.x):
-# https://github.com/HandBrake/HandBrake/pull/32
-Patch0:         https://github.com/SeanMcG/HandBrake/commit/cf1571f3bf314638a608784f19f80edb736e8144.patch
 
 # Build with unpatched libbluray
 Patch1: 	https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-no_clip_id.patch
@@ -233,6 +229,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Mon Feb 27 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.0.3-1.20170102git5ecc600
+- Updated to 1.0.3-1.20170102git5ecc600
+
 * Tue Jan 03 2017 Simone Caronni <negativo17@gmail.com> - 1.0.2-1.20170102git063446f
 - Update to latest snapshot of the 1.0.x branch.
 
