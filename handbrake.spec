@@ -11,7 +11,7 @@
 
 Name:           handbrake
 Version:        1.0.3
-Release:        1%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -229,6 +229,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sat Mar 18 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.0.3-2.20170102git5ecc600
+- Rebuilt for libbluray
 
 * Mon Feb 27 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.0.3-1.20170102git5ecc600
 - Updated to 1.0.3-1.20170102git5ecc600
