@@ -1,6 +1,7 @@
+%global gitdate 20170227
 %global commit0 5ecc600a805c6dc2632f4ca6d3beb4fbb8cbefd0
-%global date 20170227
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global gver .%{gitdate}git%{shortcommit0}
 
 # Build with "--with ffmpeg" or enable this to use system FFMpeg libraries
 # instead of bundled libAV. Unfortunately with FFMpeg UTF-8 subtitles are not
@@ -11,7 +12,7 @@
 
 Name:           handbrake
 Version:        1.0.3
-Release:        2%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
