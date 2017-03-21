@@ -86,7 +86,7 @@ BuildRequires:  patch
 BuildRequires:  python
 BuildRequires:  subversion
 BuildRequires:  tar
-BuildRequires:  webkitgtk3-devel
+BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
 BuildRequires:  x264-devel
 BuildRequires:  x265-devel
