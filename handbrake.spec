@@ -1,7 +1,7 @@
-%global gitdate 20170227
-%global commit0 5ecc600a805c6dc2632f4ca6d3beb4fbb8cbefd0
+%global gitdate 20170525
+%global commit0 91ed34ff38d46f389e841c46fe27b7cbfed8467c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gver .%{gitdate}git%{shortcommit0}
+%global gver .git%{shortcommit0}
 
 # Build with "--with ffmpeg" or enable this to use system FFMpeg libraries
 # instead of bundled libAV. Unfortunately with FFMpeg UTF-8 subtitles are not
@@ -11,7 +11,7 @@
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
-Version:        1.0.3
+Version:        1.0.7
 Release:        2%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
@@ -30,11 +30,11 @@ Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz
 %{!?_with_ffmpeg:Source10:       https://libav.org/releases/libav-12.tar.gz}
 
 # Build with unpatched libbluray
-Patch1: 	https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-no_clip_id.patch
+Patch1: 	HandBrake-no_clip_id.patch
 # Use system OpenCL headers
-Patch2: 	https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-system-OpenCL.patch
+Patch2: 	HandBrake-system-OpenCL.patch
 # Pass strip tool override to gtk/configure
-Patch3: 	https://raw.githubusercontent.com/UnitedRPMs/handbrake/master/HandBrake-nostrip.patch
+Patch3: 	HandBrake-nostrip.patch
 
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
@@ -172,7 +172,7 @@ echo "GCC.args.g.none = " >> custom.defs
     --enable-fdk-aac \
     --enable-qsv
 
-make -C build %{?_smp_mflags}
+make -C build %{?_smp_mflags} VERBOSE=0
 
 %install
 %make_install -C build
@@ -230,6 +230,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Thu May 25 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.0.7-2.git91ed34f
+- Updated to 1.0.7-2.git91ed34f
 
 * Sat Mar 18 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.0.3-2.20170102git5ecc600
 - Rebuilt for libbluray
