@@ -1,3 +1,4 @@
+%global debug_package %{nil}
 %global gitdate 20170525
 %global commit0 91ed34ff38d46f389e841c46fe27b7cbfed8467c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
@@ -163,6 +164,8 @@ echo "GCC.args.O.speed = %{optflags} %{?_with_ffmpeg:-I%{_includedir}/ffmpeg} -l
 echo "GCC.args.g.none = " >> custom.defs
 
 # Not an autotools configure script.
+XCFLAGS="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2" XLDFLAGS="-Wl,-z,relro"
+
 ./configure \
     --build build \
     --prefix=%{_prefix} \
