@@ -1,24 +1,22 @@
 %global debug_package %{nil}
 %global gitdate 20170525
-%global commit0 91ed34ff38d46f389e841c46fe27b7cbfed8467c
+%global commit0 3f345853a7573dcc719352b61160250e52015dc2
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
-# Build with "--with ffmpeg" or enable this to use system FFMpeg libraries
-# instead of bundled libAV. Unfortunately with FFMpeg UTF-8 subtitles are not
-# recognized in media source files. :(
-#global _with_ffmpeg 1
 
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
 Version:        1.0.7
-Release:        5%{?gver}%{?dist}
+Release:        6%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
 
 Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source1:	%{name}-snapshot
+Patch:		HandBrake-build-shared.patch
 
 # The project fetches libraries to bundle in the executable at compile time; to
 # have them available before building, proceed as follows. All files will be
@@ -28,15 +26,6 @@ Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz
 # cd build
 # make contrib.fetch
 
-%{!?_with_ffmpeg:Source10:       https://libav.org/releases/libav-12.tar.gz}
-
-# Build with unpatched libbluray
-Patch1: 	HandBrake-no_clip_id.patch
-# Use system OpenCL headers
-Patch2: 	HandBrake-system-OpenCL.patch
-# Pass strip tool override to gtk/configure
-Patch3: 	HandBrake-nostrip.patch
-
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
 BuildRequires:  bzip2-devel
@@ -44,7 +33,6 @@ BuildRequires:  dbus-glib-devel
 BuildRequires:  desktop-file-utils
 # Should be >= 2.12.1:
 BuildRequires:  fontconfig-devel >= 2.10.95
-%{?_with_ffmpeg:BuildRequires:  ffmpeg-devel >= 2.6}
 # Should be >= 2.6.5:
 BuildRequires:  freetype-devel >= 2.4.11
 # Should be >= 0.19.7:
@@ -63,7 +51,6 @@ BuildRequires:  libass-devel >= 0.13.1
 BuildRequires:  libbluray-devel >= 0.9.3-2
 BuildRequires:  libdvdnav-devel >= 5.0.1
 BuildRequires:  libdvdread-devel >= 5.0.0
-BuildRequires:  fdk-aac-devel >= 0.1.4
 BuildRequires:  libgudev1-devel
 BuildRequires:  libmfx-devel >= 1.16
 BuildRequires:  libmpeg2-devel >= 0.5.1
@@ -84,19 +71,22 @@ BuildRequires:  opencl-headers
 # Should be >= 1.1.3:
 BuildRequires:  opus-devel
 BuildRequires:  patch
-BuildRequires:  python
+BuildRequires:  python2-devel
 BuildRequires:  subversion
 BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
 BuildRequires:  x264-devel
 BuildRequires:  x265-devel
-BuildRequires:  ffmpeg-devel
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
+BuildRequires:	git
+BuildRequires:	wget
+# ffmpeg
+BuildRequires:	xvidcore-devel x264-devel x265-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
+BuildRequires:  automake libtool
 
 Requires:       hicolor-icon-theme
-%{!?_with_ffmpeg:Provides: bundled(libav) = 11.3}
 
 %description
 %{name} is a general-purpose, free, open-source, cross-platform, multithreaded
@@ -132,50 +122,40 @@ protection.
 This package contains the command line version of the program.
 
 %prep
-%setup -qn HandBrake-%{commit0}
-%{?_with_ffmpeg:%patch0 -p1}
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-mkdir -p download
 
-%{!?_with_ffmpeg:cp %{SOURCE10} download}
+# Our trick; the tarball doesn't download completely the source code; handbrake needs some data from .git
+# the script makes it for us.
+
+%{S:1} -c %{commit0}
+
+%setup -T -D -n %{name}-%{shortcommit0} 
+%patch -p0
 
 # Use system libraries in place of bundled ones
-for module in a52dec fdk-aac %{?_with_ffmpeg:ffmpeg} libdvdnav libdvdread libbluray libmfx libvpx x265; do
+for module in a52dec libdvdnav libdvdread libbluray libmfx libvpx x265; do
     sed -i -e "/MODULES += contrib\/$module/d" make/include/main.defs
 done
 
 # Fix desktop file
 sed -i -e 's/%{desktop_id}.svg/%{desktop_id}/g' gtk/src/%{desktop_id}.desktop
 
+
 %build
-echo "HASH=%{commit0}" > version.txt
-echo "SHORTHASH=%{shortcommit0}" >> version.txt
-echo "DATE=$(date "+%Y-%m-%d %T")" >> version.txt
-
-# This makes build stop if any download is attempted
-export http_proxy=http://127.0.0.1
-
-# By default the project is built with optimizations for speed and no debug.
-# Override configure settings by passing RPM_OPT_FLAGS and disabling preset
-# debug options.
-echo "GCC.args.O.speed = %{optflags} %{?_with_ffmpeg:-I%{_includedir}/ffmpeg} -lx265 -lfdk-aac -lmfx" > custom.defs
-echo "GCC.args.g.none = " >> custom.defs
 
 # Not an autotools configure script.
-XCFLAGS="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2" XLDFLAGS="-Wl,-z,relro"
-
 ./configure \
     --build build \
-    --prefix=%{_prefix} \
-    --verbose \
     --disable-gtk-update-checks \
-    --enable-x265 \
+    --strip="/bin/true" \
+    --optimize=speed \
     --enable-fdk-aac \
-    --enable-qsv
+    --prefix=%{_prefix} 
 
-make -C build %{?_smp_mflags} VERBOSE=0
+pushd build
+make libhb/project.h V=0
+make V=0
+popd
+
 
 %install
 %make_install -C build
@@ -233,6 +213,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sun Jan 14 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.0.7-6.git3f34585  
+- Changed to ffmpeg and fdk-aac bundle
 
 * Wed Dec 06 2017 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.0.7-5.git91ed34f  
 - Automatic Mass Rebuild
