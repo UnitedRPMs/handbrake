@@ -9,7 +9,7 @@
 
 Name:           handbrake
 Version:        1.0.7
-Release:        6%{?gver}%{?dist}
+Release:        7%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -213,6 +213,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sat Feb 24 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.0.7-7.git3f34585  
+- Automatic Mass Rebuild
 
 * Sun Jan 14 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.0.7-6.git3f34585  
 - Changed to ffmpeg and fdk-aac bundle
