@@ -1,6 +1,6 @@
 %global debug_package %{nil}
-%global gitdate 20170525
-%global commit0 3f345853a7573dcc719352b61160250e52015dc2
+%global gitdate 20180408
+%global commit0 b463d33a4ed4c9da5fb6432e7fb7e08422fc1aad
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -8,8 +8,8 @@
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
-Version:        1.0.7
-Release:        7%{?gver}%{?dist}
+Version:        1.1.0
+Release:        2%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -213,6 +213,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sun Apr 08 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.0-2.gitb463d33  
+- Updated to 1.1.0-2.gitb463d33 
 
 * Sat Feb 24 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.0.7-7.git3f34585  
 - Automatic Mass Rebuild
