@@ -9,7 +9,7 @@
 
 Name:           handbrake
 Version:        1.1.0
-Release:        2%{?gver}%{?dist}
+Release:        3%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -77,13 +77,13 @@ BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
 BuildRequires:  x264-devel
-BuildRequires:  x265-devel
+BuildRequires:  x265-devel >= 2.8
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
 BuildRequires:	git
 BuildRequires:	wget
 # ffmpeg
-BuildRequires:	xvidcore-devel x264-devel x265-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
+BuildRequires:	xvidcore-devel x264-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
 BuildRequires:  automake libtool
 
 Requires:       hicolor-icon-theme
@@ -213,6 +213,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sun May 27 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.0-3.gitb463d33  
+- Automatic Mass Rebuild
 
 * Sun Apr 08 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.0-2.gitb463d33  
 - Updated to 1.1.0-2.gitb463d33 
