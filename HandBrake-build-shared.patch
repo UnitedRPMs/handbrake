@@ -1,23 +1,24 @@
---- gtk/configure.ac	2017-04-09 14:24:50.000000000 -0600
-+++ configure-1.ac	2018-01-13 22:05:00.376843903 -0600
-@@ -168,7 +168,7 @@
+diff -ruN orig/gtk/configure.ac new/gtk/configure.ac
+--- orig/gtk/configure.ac	2018-05-29 17:28:13.000000000 -0600
++++ new/gtk/configure.ac	2018-05-30 10:51:11.175228245 -0600
+@@ -177,7 +177,7 @@
  
  GHB_CFLAGS="$HBINC $GHB_CFLAGS"
  
--HB_LIBS="-lhandbrake -lavresample -lavformat -lavcodec -lavfilter -lavutil -ldvdnav -ldvdread -lmp3lame -lvorbis -lvorbisenc -logg -lsamplerate -lx264 -lswscale -ltheoraenc -ltheoradec -lvpx -lz -lbz2 -lbluray -lass -lfontconfig -lfreetype -lxml2 -ljansson -lopus"
-+HB_LIBS="-lhandbrake -lavresample -lavformat -lavcodec -lavfilter -lavutil -ldvdnav -ldvdread -lmp3lame -lvorbis -lvorbisenc -logg -lsamplerate -lx264 -lx265 -lswscale -ltheoraenc -ltheoradec -lvpx -lz -lbz2 -lbluray -lass -lfontconfig -lfreetype -lxml2 -ljansson -lopus"
+-HB_LIBS="-lhandbrake -lavresample -lavformat -lavfilter -lavcodec -lavutil -lswresample -lpostproc -ldvdnav -ldvdread -lmp3lame -lvorbis -lvorbisenc -logg -lsamplerate -lx264 -lswscale -ltheoraenc -ltheoradec -lvpx -lz -lbz2 -lbluray -lass -lfontconfig -lfreetype -lxml2 -ljansson -lopus -lspeex -llzma"
++HB_LIBS="-lhandbrake -lavresample -lavformat -lavfilter -lavcodec -lavutil -lswresample -lpostproc -ldvdnav -ldvdread -lmp3lame -lvorbis -lvorbisenc -logg -lsamplerate -lx264 -lx265 -lswscale -ltheoraenc -ltheoradec -lvpx -lz -lbz2 -lbluray -lass -lfontconfig -lfreetype -lxml2 -ljansson -lopus -lspeex -llzma"
  
  case $host in
    *-*-mingw*)
-
---- test/module.defs	2017-04-09 14:24:50.000000000 -0600
-+++ module-1.defs	2018-01-13 22:07:53.079957188 -0600
+diff -ruN orig/test/module.defs new/test/module.defs
+--- orig/test/module.defs	2018-05-29 17:28:13.000000000 -0600
++++ new/test/module.defs	2018-05-30 10:52:17.097877140 -0600
 @@ -16,7 +16,7 @@
  TEST.GCC.l = \
-         ass avresample avformat avcodec avfilter avutil mp3lame dvdnav \
+         ass avresample avformat avfilter avcodec avutil swresample postproc mp3lame dvdnav \
          dvdread fribidi \
 -        samplerate swscale vpx theoraenc theoradec vorbis vorbisenc ogg x264 \
 +        samplerate swscale vpx theoraenc theoradec vorbis vorbisenc ogg x264 x265 \
-         bluray freetype xml2 bz2 z jansson harfbuzz opus
+         bluray freetype xml2 bz2 z jansson harfbuzz opus speex lzma
  
  ifeq (,$(filter $(BUILD.system),darwin cygwin mingw))
