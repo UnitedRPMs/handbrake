@@ -1,6 +1,6 @@
 diff -ruN orig/gtk/configure.ac new/gtk/configure.ac
---- orig/gtk/configure.ac	2018-05-29 17:28:13.000000000 -0600
-+++ new/gtk/configure.ac	2018-05-30 10:51:11.175228245 -0600
+--- a/gtk/configure.ac	2018-05-29 17:28:13.000000000 -0600
++++ b/gtk/configure.ac	2018-05-30 10:51:11.175228245 -0600
 @@ -177,7 +177,7 @@
  
  GHB_CFLAGS="$HBINC $GHB_CFLAGS"
@@ -11,8 +11,8 @@ diff -ruN orig/gtk/configure.ac new/gtk/configure.ac
  case $host in
    *-*-mingw*)
 diff -ruN orig/test/module.defs new/test/module.defs
---- orig/test/module.defs	2018-05-29 17:28:13.000000000 -0600
-+++ new/test/module.defs	2018-05-30 10:52:17.097877140 -0600
+--- a/test/module.defs	2018-05-29 17:28:13.000000000 -0600
++++ b/test/module.defs	2018-05-30 10:52:17.097877140 -0600
 @@ -16,7 +16,7 @@
  TEST.GCC.l = \
          ass avresample avformat avfilter avcodec avutil swresample postproc mp3lame dvdnav \
