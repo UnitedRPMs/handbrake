@@ -129,7 +129,7 @@ This package contains the command line version of the program.
 %{S:1} -c %{commit0}
 
 %setup -T -D -n %{name}-%{shortcommit0} 
-%patch -p0
+%patch -p1
 
 # Use system libraries in place of bundled ones
 for module in a52dec libdvdnav libdvdread libbluray libmfx libvpx x265; do
