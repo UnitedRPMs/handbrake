@@ -169,8 +169,6 @@ install -D -p -m 644 gtk/src/%{desktop_id}.desktop \
     %{buildroot}/%{_datadir}/applications/%{desktop_id}.desktop
 install -D -p -m 644 gtk/src/%{desktop_id}.svg \
     %{buildroot}/%{_datadir}/icons/hicolor/scalable/apps/%{desktop_id}.svg
-install -D -p -m 644 gtk/src/%{desktop_id}.appdata.xml \
-    %{buildroot}/%{_datadir}/appdata/%{desktop_id}.appdata.xml
 
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{desktop_id}.desktop
 
@@ -199,13 +197,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %license COPYING
 %doc AUTHORS.markdown NEWS.markdown README.markdown THANKS.markdown
 %{_bindir}/ghb
-%if 0%{?fedora}
-%{_datadir}/appdata/%{desktop_id}.appdata.xml
-%else
-%exclude %{_datadir}/appdata/%{desktop_id}.appdata.xml
-%endif
 %{_datadir}/applications/%{desktop_id}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{desktop_id}.svg
+%{_datadir}/metainfo/fr.handbrake.ghb.appdata.xml
 
 %files cli
 %{!?_licensedir:%global license %%doc}
