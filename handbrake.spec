@@ -9,7 +9,7 @@
 
 Name:           handbrake
 Version:        1.1.1
-Release:        2%{?gver}%{?dist}
+Release:        3%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -28,6 +28,7 @@ Patch:		HandBrake-build-shared.patch
 
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
+BuildRequires:  nv-codec-headers >= 8.1.24.2
 BuildRequires:  bzip2-devel
 BuildRequires:  dbus-glib-devel
 BuildRequires:  desktop-file-utils
@@ -150,6 +151,7 @@ sed -i -e 's/%{desktop_id}.svg/%{desktop_id}/g' gtk/src/%{desktop_id}.desktop
     --strip="/bin/true" \
     --optimize=speed \
     --enable-fdk-aac \
+    --enable-nvenc \
     --prefix=%{_prefix} 
 
 pushd build
@@ -208,6 +210,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Wed Jul 04 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.1-3.git1bd13ba  
+- Enabled nvenc
 
 * Mon Jun 18 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.1-2.git1bd13ba  
 - Updated to 1.1.1
