@@ -16,7 +16,6 @@ URL:            http://handbrake.fr/
 
 Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Source1:	%{name}-snapshot
-Patch:		HandBrake-build-shared.patch
 
 # The project fetches libraries to bundle in the executable at compile time; to
 # have them available before building, proceed as follows. All files will be
@@ -130,8 +129,10 @@ This package contains the command line version of the program.
 
 %{S:1} -c %{commit0}
 
-%setup -T -D -n %{name}-%{shortcommit0} 
-%patch -p1
+%autosetup -T -D -n %{name}-%{shortcommit0} 
+
+sed -i 's|-lx264 |-lx264 -lx265 |g' gtk/configure.ac
+sed -i 's|x264 |x264 x265 |g' test/module.defs
 
 # Use system libraries in place of bundled ones
 for module in a52dec libdvdnav libdvdread libbluray libmfx libvpx x265; do
