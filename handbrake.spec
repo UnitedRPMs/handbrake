@@ -27,7 +27,9 @@ Source1:	%{name}-snapshot
 
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
+%if 0%{?fedora} >= 27
 BuildRequires:  nv-codec-headers >= 8.1.24.2
+%endif
 BuildRequires:  bzip2-devel
 BuildRequires:  dbus-glib-devel
 BuildRequires:  desktop-file-utils
@@ -152,7 +154,9 @@ sed -i -e 's/%{desktop_id}.svg/%{desktop_id}/g' gtk/src/%{desktop_id}.desktop
     --strip="/bin/true" \
     --optimize=speed \
     --enable-fdk-aac \
+%if 0%{?fedora} >= 27
     --enable-nvenc \
+%endif
     --prefix=%{_prefix} 
 
 pushd build
