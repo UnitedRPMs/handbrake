@@ -85,6 +85,7 @@ BuildRequires:  zlib-devel
 BuildRequires:	git
 BuildRequires:	wget
 BuildRequires:	speex-devel
+BuildRequires:  gcc-c++
 # ffmpeg
 BuildRequires:	xvidcore-devel x264-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
 BuildRequires:  automake libtool
