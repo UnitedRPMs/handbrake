@@ -8,7 +8,7 @@
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
-Version:        1.1.1
+Version:        1.1.2
 Release:        3%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
@@ -216,6 +216,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Thu Sep 06 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.2-3.git1bd13ba  
+- Updated to 1.1.2
 
 * Wed Jul 04 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.1-3.git1bd13ba  
 - Enabled nvenc
