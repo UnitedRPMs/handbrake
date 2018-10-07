@@ -9,7 +9,7 @@
 
 Name:           handbrake
 Version:        1.1.2
-Release:        3%{?gver}%{?dist}
+Release:        4%{?gver}%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -216,6 +216,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Fri Oct 05 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.2-4.git1bd13ba  
+- Automatic Mass Rebuild
 
 * Thu Sep 06 2018 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.1.2-3.git1bd13ba  
 - Updated to 1.1.2
