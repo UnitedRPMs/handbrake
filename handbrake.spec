@@ -1,21 +1,13 @@
-%global debug_package %{nil}
-%global gitdate 20190225
-%global commit0 4eb9f7b2f925620cc346ab186010a6e5711a5cc8
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global gver .git%{shortcommit0}
-
-
 %global desktop_id fr.handbrake.ghb
 
 Name:           handbrake
 Version:        1.2.2
-Release:        8%{?gver}%{?dist}
+Release:        10%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
 
-Source0:        https://github.com/HandBrake/HandBrake/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
-Source1:	%{name}-snapshot
+Source0:        https://download.handbrake.fr/releases/%{version}/HandBrake-%{version}-source.tar.bz2
 
 # The project fetches libraries to bundle in the executable at compile time; to
 # have them available before building, proceed as follows. All files will be
@@ -79,13 +71,14 @@ BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
 BuildRequires:  x264-devel >= 0.157
-BuildRequires:  x265-devel >= 3.0
+BuildRequires:  x265-devel >= 3.1.1
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
 BuildRequires:	git
 BuildRequires:	wget
 BuildRequires:	speex-devel
 BuildRequires:  gcc-c++
+BuildRequires:	numactl-devel
 # ffmpeg
 BuildRequires:	xvidcore-devel x264-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
 BuildRequires:  automake libtool
@@ -130,9 +123,14 @@ This package contains the command line version of the program.
 # Our trick; the tarball doesn't download completely the source code; handbrake needs some data from .git
 # the script makes it for us.
 
-%{S:1} -c %{commit0}
+#{S:1} -c %{commit0}
 
-%autosetup -T -D -n %{name}-%{shortcommit0} 
+#autosetup -T -D -n %{name}-%{shortcommit0} -p1
+%autosetup -n HandBrake-%{version} 
+
+  # python2 substitutions
+  sed -i -e '1c#! /usr/bin/python2' "gtk/src/makedeps.py"
+  sed -i -e '1c#! /usr/bin/python2' "make/configure.py"
 
 sed -i 's|-lx264 |-lx264 -lx265 |g' gtk/configure.ac
 sed -i 's|x264 |x264 x265 |g' test/module.defs
@@ -149,16 +147,25 @@ sed -i -e 's/%{desktop_id}.svg/%{desktop_id}/g' gtk/src/%{desktop_id}.desktop
 %build
 
 # Not an autotools configure script.
+
+export CFLAGS="%{optflags}"
+export CXXFLAGS="%{optflags}"
+export LDFLAGS="%{optflags}"
+
 ./configure \
-    --build build \
+    --prefix=/usr \
+    --build build --debug=std \
     --disable-gtk-update-checks \
+    --enable-gtk \
     --strip="/bin/true" \
     --optimize=speed \
     --enable-fdk-aac \
 %if 0%{?fedora} >= 27
     --enable-nvenc \
 %endif
-    --prefix=%{_prefix} 
+
+
+
 
 pushd build
 make libhb/project.h V=0
@@ -216,6 +223,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Tue Jul 16 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.2.2-10.gitdf8c5f8  
+- Rebuilt for x265
 
 * Fri Mar 22 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.2.2-8.git4eb9f7b  
 - Rebuilt for x264
