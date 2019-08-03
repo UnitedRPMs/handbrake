@@ -71,7 +71,7 @@ BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
 BuildRequires:  x264-devel >= 0.157
-BuildRequires:  x265-devel >= 3.1.1
+BuildRequires:  x265-devel >= 3.1.2
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
 BuildRequires:	git
