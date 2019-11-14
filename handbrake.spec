@@ -1,4 +1,7 @@
 %global desktop_id fr.handbrake.ghb
+%global commit0 f7bc55eb2cf06759b2cbe339c858d1d6a6b2d831
+%global date 20191018
+%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
 Name:           handbrake
 Version:        1.3.0
@@ -7,21 +10,11 @@ Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
 
-Source0:        https://download.handbrake.fr/releases/%{version}/HandBrake-%{version}-source.tar.bz2
+Source0:        https://github.com/%{name}/%{name}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
-# The project fetches libraries to bundle in the executable at compile time; to
-# have them available before building, proceed as follows. All files will be
-# available in the "download" folder.
-#
-# ./configure
-# cd build
-# make contrib.fetch
 
 BuildRequires:  a52dec-devel >= 0.7.4
 BuildRequires:  cmake
-%if 0%{?fedora} >= 27
-BuildRequires:  nv-codec-headers >= 8.1.24.2
-%endif
 BuildRequires:  bzip2-devel
 BuildRequires:  dbus-glib-devel
 BuildRequires:  desktop-file-utils
@@ -65,7 +58,7 @@ BuildRequires:  opencl-headers
 # Should be >= 1.1.3:
 BuildRequires:  opus-devel
 BuildRequires:  patch
-BuildRequires:  python2-devel
+BuildRequires:  python3-devel
 BuildRequires:  subversion
 BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
@@ -79,6 +72,11 @@ BuildRequires:	wget
 BuildRequires:	speex-devel
 BuildRequires:  gcc-c++
 BuildRequires:	numactl-devel
+BuildRequires:	meson
+BuildRequires:	nasm
+BuildRequires:	gtk3-devel
+BuildRequires:	libdrm-devel
+
 # ffmpeg
 BuildRequires:	xvidcore-devel x264-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
 BuildRequires:  automake libtool
@@ -119,14 +117,8 @@ protection.
 This package contains the command line version of the program.
 
 %prep
+%autosetup -p1 -n HandBrake-%{commit0}
 
-# Our trick; the tarball doesn't download completely the source code; handbrake needs some data from .git
-# the script makes it for us.
-
-#{S:1} -c %{commit0}
-
-#autosetup -T -D -n %{name}-%{shortcommit0} -p1
-%autosetup -n HandBrake-%{version} 
 
   # python2 substitutions
   sed -i -e '1c#! /usr/bin/python2' "gtk/src/makedeps.py"
@@ -143,8 +135,14 @@ done
 # Fix desktop file
 sed -i -e 's/%{desktop_id}.svg/%{desktop_id}/g' gtk/src/%{desktop_id}.desktop
 
+ find -type f -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!%{__python3}=' {} +
+
 
 %build
+
+echo "HASH=%{commit0}" > version.txt
+echo "SHORTHASH=%{shortcommit0}" >> version.txt
+echo "DATE=$(date "+%Y-%m-%d %T")" >> version.txt
 
 # Not an autotools configure script.
 
@@ -156,21 +154,16 @@ export LDFLAGS="%{optflags}"
     --prefix=/usr \
     --build build --debug=std \
     --disable-gtk-update-checks \
-    --enable-gtk \
     --strip="/bin/true" \
     --optimize=speed \
     --enable-fdk-aac \
 %if 0%{?fedora} >= 27
     --enable-nvenc \
 %endif
+    --enable-qsv
 
+make -C build V=0
 
-
-
-pushd build
-make libhb/project.h V=0
-make V=0
-popd
 
 
 %install
@@ -226,6 +219,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 * Mon Nov 11 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.0-7  
 - Updated to 1.3.0
+- Github source commits
 
 * Fri Aug 02 2019 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.2.2-11  
 - Rebuilt for x265
