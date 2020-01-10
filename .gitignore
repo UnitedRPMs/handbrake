@@ -3,6 +3,6 @@ BUILDROOT/*
 RPMS/*
 SPECS/*
 SRPMS/*
-handbrake*.tar.gz
-libav*.tar.gz
+*.tar.gz
 .directory
+*.rpm
