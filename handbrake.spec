@@ -7,7 +7,7 @@
 
 Name:           handbrake
 Version:        1.3.3
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -65,7 +65,7 @@ BuildRequires:  subversion
 BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
-BuildRequires:  x264-devel >= 0.157
+BuildRequires:  x264-devel >= 0.159
 BuildRequires:  x265-devel >= 3.4
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
@@ -216,6 +216,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Sat Jul 04 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.3-8  
+- Rebuilt for x264
 
 * Tue Jun 23 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.3-7  
 - Updated to 1.3.3
