@@ -207,7 +207,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/ghb
 %{_datadir}/applications/%{desktop_id}.desktop
 %{_datadir}/icons/hicolor/scalable/apps/%{desktop_id}.svg
-%{_datadir}/metainfo/fr.handbrake.ghb.appdata.xml
+%{_datadir}/metainfo/*.xml
 
 %files cli
 %{!?_licensedir:%global license %%doc}
