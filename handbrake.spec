@@ -1,16 +1,16 @@
 %define _legacy_common_support 1
 
 %global desktop_id fr.handbrake.ghb
-%global commit0 f84dfca16ba9fe4b61dab54a649651222d0130e9
+%global commit0 752d2abd67e8331fd6135961765f71a79b981d0e
 %global date 20200507
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
-#define _legacy_common_support 1
+%define _legacy_common_support 1
 %global _lto_cflags %{nil}
 
 Name:           handbrake
 Version:        1.3.3
-Release:        10%{?dist}
+Release:        12%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
 URL:            http://handbrake.fr/
@@ -42,7 +42,11 @@ BuildRequires:  libass-devel >= 0.13.1
 # Contains a required patch for HandBrake 1.0:
 BuildRequires:  libbluray-devel >= 0.9.3-2
 BuildRequires:  libdvdnav-devel >= 5.0.1
-BuildRequires:  libdvdread-devel >= 5.0.0
+%if 0%{?fedora} >= 34
+BuildRequires:  pkgconfig(dvdread) >= 6.1.1
+%else
+BuildRequires:  pkgconfig(dvdread)
+%endif
 BuildRequires:  libgudev1-devel
 BuildRequires:  libmfx-devel >= 1.16
 BuildRequires:  libmpeg2-devel >= 0.5.1
@@ -68,7 +72,7 @@ BuildRequires:  subversion
 BuildRequires:  tar
 BuildRequires:  webkitgtk4-devel
 BuildRequires:  wget
-BuildRequires:  x264-devel >= 0.159
+BuildRequires:  x264-devel >= 1:0.161
 BuildRequires:  x265-devel >= 3.4
 BuildRequires:  yasm
 BuildRequires:  zlib-devel
@@ -81,9 +85,12 @@ BuildRequires:	meson
 BuildRequires:	nasm
 BuildRequires:	gtk3-devel
 BuildRequires:	libdrm-devel
+BuildRequires:	libdav1d-devel
+BuildRequires:	turbojpeg-devel
+#BuildRequires:	intel-mediasdk-devel
 
 # ffmpeg
-BuildRequires:	xvidcore-devel x264-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
+BuildRequires:	xvidcore-devel lame-devel twolame-devel twolame-devel yasm ladspa-devel libbs2b-devel libmysofa-devel game-music-emu-devel soxr-devel libssh-devel libvpx-devel libvorbis-devel opus-devel libtheora-devel freetype-devel
 BuildRequires:  automake libtool
 
 Requires:       hicolor-icon-theme
@@ -133,7 +140,7 @@ sed -i 's|-lx264 |-lx264 -lx265 |g' gtk/configure.ac
 sed -i 's|x264 |x264 x265 |g' test/module.defs
 
 # Use system libraries in place of bundled ones
-for module in a52dec libdvdnav libdvdread libbluray libmfx libvpx x265; do
+for module in libdav1d libdvdnav libdvdread libbluray a52dec libvpx x265; do
     sed -i -e "/MODULES += contrib\/$module/d" make/include/main.defs
 done
 
@@ -150,14 +157,12 @@ echo "SHORTHASH=%{shortcommit0}" >> version.txt
 echo "DATE=$(date "+%Y-%m-%d %T")" >> version.txt
 
 # Not an autotools configure script.
-
-export CFLAGS="%{optflags}"
-export CXXFLAGS="%{optflags}"
-export LDFLAGS="%{optflags}"
-
+mkdir build
 ./configure \
-    --prefix=/usr \
-    --build build --debug=std \
+    --prefix=%{_prefix} \
+    --libdir=%{_libdir} \
+    --force \
+    --build=$PWD/build --debug=std \
     --disable-gtk-update-checks \
     --strip="/bin/true" \
     --optimize=speed \
@@ -219,6 +224,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Mon Nov 23 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.3-12  
+- Rebuilt for x264
+
+* Sun Nov 01 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.3-11  
+- Rebuilt for libdvdread
 
 * Mon Oct 05 2020 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.3.3-10  
 - Updated to current commit
