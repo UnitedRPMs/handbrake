@@ -1,7 +1,7 @@
 %define _legacy_common_support 1
 
 %global desktop_id fr.handbrake.ghb
-%global commit0 ed3703a0f95b663a68a2e6dda6958cb4c0067015
+%global commit0 a8bc2549b3de632e2597cb133bc3aa20ca8a3629
 %global date 20200507
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 
@@ -9,7 +9,7 @@
 %global _lto_cflags %{nil}
 
 Name:           handbrake
-Version:        1.4.1
+Version:        1.4.2
 Release:        7%{?dist}
 Summary:        An open-source multiplatform video transcoder
 License:        GPLv2+
@@ -224,6 +224,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_bindir}/HandBrakeCLI
 
 %changelog
+
+* Mon Oct 04 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.4.2-7 
+- Updated to 1.4.2
 
 * Mon Aug 23 2021 Unitedrpms Project <unitedrpms AT protonmail DOT com> 1.4.1-7 
 - Updated to 1.4.1
